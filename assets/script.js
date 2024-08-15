@@ -19,12 +19,12 @@ async function fetchProducts() {
     }
 }
 
-
 // Function to render products
-function renderProducts(startIndex, endIndex) {
+function renderProducts(productsToRender, startIndex, endIndex) {
     const container = document.getElementById('product-container');
-    for (let i = startIndex; i < endIndex && i < products.length; i++) {
-        const product = products[i];
+    container.innerHTML = ''; // Clear existing products
+    for (let i = startIndex; i < endIndex && i < productsToRender.length; i++) {
+        const product = productsToRender[i];
         const productElement = document.createElement('div');
         productElement.className = productClass;
         productElement.innerHTML = `
@@ -41,19 +41,41 @@ function renderProducts(startIndex, endIndex) {
 function loadMore() {
     const startIndex = currentIndex;
     const endIndex = currentIndex + itemsPerLoad;
-    renderProducts(startIndex, endIndex);
+    renderProducts(filteredProducts, startIndex, endIndex);
     currentIndex = endIndex;
 
-    if (currentIndex >= products.length) {
+    if (currentIndex >= filteredProducts.length) {
         document.getElementById('loadMore').style.display = 'none';
+    } else {
+        document.getElementById('loadMore').style.display = 'initial';
     }
 }
+
+// Function to filter products based on search query
+function filterProducts(query) {
+    return products.filter(product => 
+        product.Name.toLowerCase().includes(query.toLowerCase()) ||
+        product.Description.toLowerCase().includes(query.toLowerCase())
+    );
+}
+
+// Function to handle search
+function handleSearch() {
+    const searchQuery = document.getElementById('searchInput').value;
+    filteredProducts = filterProducts(searchQuery);
+    currentIndex = 0;
+    loadMore();
+}
+
+let filteredProducts = [];
 
 // Initialize
 async function init() {
     products = await fetchProducts();
+    filteredProducts = products;
     loadMore();
     document.getElementById('loadMore').addEventListener('click', loadMore);
+    document.getElementById('searchInput').addEventListener('input', handleSearch);
 }
 
 init();
