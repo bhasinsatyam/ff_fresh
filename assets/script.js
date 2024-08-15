@@ -1,5 +1,6 @@
 let products = []; // JSON data will be loaded here
 let currentIndex = 0;
+let filteredProducts = [];
 const itemsPerLoad = 20;
 const productClass = "product col"
 const placeholderImage = "https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-collection-4_large.png?v=1530129177"
@@ -22,7 +23,6 @@ async function fetchProducts() {
 // Function to render products
 function renderProducts(productsToRender, startIndex, endIndex) {
     const container = document.getElementById('product-container');
-    container.innerHTML = ''; // Clear existing products
     for (let i = startIndex; i < endIndex && i < productsToRender.length; i++) {
         const product = productsToRender[i];
         const productElement = document.createElement('div');
@@ -62,12 +62,13 @@ function filterProducts(query) {
 // Function to handle search
 function handleSearch() {
     const searchQuery = document.getElementById('searchInput').value;
+    const container = document.getElementById('product-container');
     filteredProducts = filterProducts(searchQuery);
     currentIndex = 0;
+    container.innerHTML = ''; // Clear existing products
     loadMore();
 }
 
-let filteredProducts = [];
 
 // Initialize
 async function init() {
