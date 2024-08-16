@@ -29,8 +29,8 @@ function renderProducts(productsToRender, startIndex, endIndex) {
         productElement.className = productClass;
         productElement.innerHTML = `
             <div class="product-image ratio ratio-1x1"><img class="object-fit-contain w-full" src="${product['img link'] || placeholderImage}" alt=""></div>
-            <div class="product-title text-center h4 mt-4">${product.Name}</div>
-            <div class="product-price text-center text-success h2 mt-1">₹${product["Selling Price"]}</div>
+            <div class="product-title text-center h4 mt-4 fw-bold"  style="color: #753617;">${product.Name}</div>
+            <div class="product-price text-center h1 mt-1 fw-bold" style="color: #729e3d;">₹${product["Selling Price"]}</div>
             <div class="product-description text-center mt-1">${product.Description}</div>
         `;
         container.appendChild(productElement);
